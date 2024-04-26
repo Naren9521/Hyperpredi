@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Machine Learning Prediction</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../Static/css/Hypredi.css">
+</head>
+
+<body>
+    <nav class = "navbar">
+        <div class="container main-nav flex">
+            <div class="logo-details">
+                <i class="fas fa-heartbeat" id ="logoimg"></i>
+                <span class="logo_name">Hypredi</span>
+            </div>
+            <div class="nav-links" id="nav-links"> 
+                <ul class="flex">
+                    <li><a href="#" class="hover-link">Home</a></li>
+                    <li><a href="about_us.html" class="hover-link"> About us</a></li>
+                    <li><a href="contactus.html" class="hover-link">Contact us</a></li>
+                    <li><a href="../Templates/signin.html" class="hover-link secondary-button">Login</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <h1 class = form1>Machine Learning Prediction</h1> 
+    <div class="container01">
+        <form id="predictionForm">
+            <input type="number" id="first_input" placeholder="Enter your id " min="0">
+            <input type="number" id="second_input" placeholder="Enter your age" min="0">
+            <input type="number" id="third_input" placeholder="Enter your average glucose level" min="0">
+            <input type="number" id="fourth_input" placeholder="Enter your BMI" min="0">
+            <input type="button" class="secondary-button" value="Predict" onclick="predict()">
+        </form>
+        <div id="predictionResult" class="reveal"></div>
+    </div>
+
+    <script>
+        async function predict() {
+            const firstInput = document.getElementById("first_input").value;
+            const secondInput = document.getElementById("second_input").value;
+            const thirdInput = document.getElementById("third_input").value;
+            const fourthInput = document.getElementById("fourth_input").value;
+
+            const response = await fetch('http://127.0.0.1:8000/prediction', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    first_input: firstInput,
+                    second_input: secondInput,
+                    third_input: thirdInput,
+                    fourth_input: fourthInput
+                })
+            });
+
+            const result = await response.text();
+            document.getElementById("predictionResult").innerHTML = `<h2>Prediction Result:</h2><p>${result}</p>`;
+            document.getElementById("predictionResult").classList.add("active");
+        }
+    </script>
+</body>
+
+</html>
